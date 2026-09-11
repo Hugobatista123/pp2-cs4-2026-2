@@ -1,4 +1,4 @@
--- Etapa de 20/08: criação da tabela de clientes.
+-- CreateTable
 CREATE TABLE "Customer" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
@@ -12,5 +12,6 @@ CREATE TABLE "Customer" (
     "state" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "email" TEXT NOT NULL,
+
     CONSTRAINT "Customer_pkey" PRIMARY KEY ("id")
 );

@@ -63,7 +63,18 @@ Em 11/09/2026, com Node.js 24 e PostgreSQL 18 local:
 - POST com o corpo exato de Mariana do roteiro: **201 Created**, `id: 1`.
 - GET `/customers/1`: **200 OK**, confirmando os dados persistidos.
 
-A conexão local está em `back-end/.env`, ignorada pelo Git. Foi criado um cluster separado em `.tmp/postgres-data`, na porta 55432, sem modificar o serviço PostgreSQL já instalado. Após reiniciar o computador, ele pode ser iniciado a partir da raiz do repositório:
+Após configurar a conexão Prisma Postgres do usuário, a validação foi repetida **no banco em nuvem**:
+
+- Os três arquivos de migrations foram recuperados com os nomes já registrados no banco (`20260903225534_create_customers`, `20260903225550_alter_customers` e `20260903225700_alter_customers`). Os hashes SHA-256 dos arquivos conferem exatamente com os checksums das migrations aplicadas. O SQL foi recuperado do [repositório da disciplina](https://github.com/faustocintra/pp2-cs4-2026-2/tree/main/back-end/prisma/migrations).
+- A tentativa inicial de recriar a tabela existente foi marcada como revertida no histórico pelo `prisma migrate resolve`, sem remover a tabela ou registros.
+- `npm run db:migrate`: nenhuma migration pendente; `prisma migrate status`: atualizado; `prisma migrate diff`: nenhuma diferença.
+- `npm start`: build aprovado e API conectada ao Prisma Postgres.
+- POST `/customers` com o corpo de Mariana: **201 Created**, `id: 1`; GET `/customers/1`: **200 OK**. Uma consulta SQL independente confirmou o registro no banco em nuvem.
+- As migrations recuperadas também foram aplicadas em um novo banco local vazio (`karangos_verify`), com os três testes de integração aprovados novamente.
+
+A conexão ativa com a nuvem está somente em `back-end/.env`, ignorada pelo Git. `.env.example` mantém `DATABASE_URL` vazia. Nesta máquina, o VS Code também está escutando em `127.0.0.1:8888`; se ele interceptar a conexão, use `http://[::1]:8888` para alcançar diretamente a API. O POST de validação em nuvem foi enviado por esse endereço de loopback IPv6.
+
+Para os testes locais foi criado um cluster separado em `.tmp/postgres-data`, na porta 55432, sem modificar o serviço PostgreSQL já instalado. Após reiniciar o computador, ele pode ser iniciado a partir da raiz do repositório:
 
 ```powershell
 & 'C:/Program Files/PostgreSQL/18/bin/pg_ctl.exe' -D .tmp/postgres-data -l .tmp/postgres.log -o '-p 55432 -h 127.0.0.1' -w start
@@ -71,4 +82,4 @@ A conexão local está em `back-end/.env`, ignorada pelo Git. Foi criado um clus
 
 Esse cluster atende somente na interface local e usa autenticação trust para desenvolvimento. Os arquivos do banco permanecem locais e não são enviados ao repositório.
 
-**Pendente de configuração externa:** a conexão com a conta Prisma Postgres em nuvem descrita nas páginas 10–16 do PDF não foi fornecida. A validação acima foi feita no PostgreSQL local; para validar na nuvem, configure a `DATABASE_URL` dessa conta, aplique as migrations e repita o POST. As atividades pessoais no AVA e de organização do grupo UCE não foram realizadas por este projeto; a avaliação de 17/09 e o relatório com prazo de 27/09 estão fora do recorte solicitado.
+As atividades pessoais no AVA e de organização do grupo UCE não fazem parte da implementação deste repositório; a avaliação de 17/09 e o relatório com prazo de 27/09 estão fora do recorte solicitado.
