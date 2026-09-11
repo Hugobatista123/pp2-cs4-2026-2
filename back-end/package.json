@@ -3,11 +3,14 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "tsx watch ./src/bin/server",
-    "start": "node ./dist/bin/server.js",
-    "build": "rimraf dist && npx tsc",
-    "postbuild": "copyfiles -u 1 src/views/*.null dist",
-    "prestart": "npm run build"
+    "dev": "tsx watch ./src/bin/server.ts",
+    "start": "node ./dist/src/bin/server.js",
+    "build": "prisma generate && rimraf dist && tsc",
+    "prestart": "npm run build",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate deploy",
+    "db:studio": "prisma studio",
+    "test": "node --import tsx --test test/*.test.ts"
   },
   "dependencies": {
     "@prisma/adapter-pg": "^7.9.1",

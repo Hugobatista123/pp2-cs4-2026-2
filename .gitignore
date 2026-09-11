@@ -1,4 +1,6 @@
 # Logs
+.tmp/
+/pp2-cs4-2026-2.pdf
 logs
 *.log
 npm-debug.log*

@@ -4,16 +4,16 @@
  * Module dependencies.
  */
 
-import app from '../app'
+import app from '../app.js'
 import chalk from 'chalk'
 import { createServer } from 'http'
-import { ExpressError } from '../types/error'
+import type { ExpressError } from '../types/error.js'
 
 /**
  * Get port from environment and store in Express.
  */
 
-const port = normalizePort(process.env.PORT || '8080')
+const port = normalizePort(process.env.PORT || '8888')
 app.set('port', port)
 
 /**

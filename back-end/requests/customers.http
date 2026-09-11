@@ -1,0 +1,35 @@
+@baseUrl = http://localhost:8888
+@customerId = 1
+
+### Inserção do primeiro cliente (roteiro de 10/09): esperado 201 Created
+POST {{baseUrl}}/customers
+Content-Type: application/json
+
+{
+  "name": "Mariana Alves Pereira",
+  "ident_document": "12345678901",
+  "birth_date": "1992-04-18T00:00:00.000Z",
+  "street_name": "Rua das Acácias",
+  "house_number": "145",
+  "complements": "Apto 32",
+  "district": "Jardim América",
+  "municipality": "Franca",
+  "state": "SP",
+  "phone": "16991234567",
+  "email": "mariana.pereira@example.com"
+}
+
+### Listagem ordenada por nome: esperado 200
+GET {{baseUrl}}/customers
+
+### Busca pelo ID devolvido no POST: esperado 200
+GET {{baseUrl}}/customers/{{customerId}}
+
+### Atualização parcial: esperado 200
+PUT {{baseUrl}}/customers/{{customerId}}
+Content-Type: application/json
+
+{ "house_number": "146" }
+
+### Exclusão: esperado 204, sem corpo
+DELETE {{baseUrl}}/customers/{{customerId}}
